@@ -4,7 +4,7 @@ const mongoose=require("mongoose");
 const blogSchema=new mongoose.Schema({
     title:{type:String,required:true},
     summary:{type:String,required:true},
-    img:{data:Buffer,ContentType:String},
+    img:{type:Array,value:[String],required:true},
     content:{type:"String",required:true},
 },{
     timestamps:true

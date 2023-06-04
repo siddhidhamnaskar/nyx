@@ -1,10 +1,25 @@
 const blogs=require("../Models/blogSchema")
 
 const router=require("express");
-const multer=require('multer');
+const blogRouter=router();
 const fs =require('fs');
 
-router.get("/blogs",async(req,res)=>{
+const dotenv=require("dotenv");
+dotenv.config();
+const cloudinary=require("cloudinary").v2;
+
+cloudinary.config({
+    cloud_name:process.env.CLOUD_NAME,
+    api_key:process.env.API_KEY,
+    api_secret:process.env.API_SECRET
+
+})
+
+const upload=require('../ImageUpload/multer')
+
+
+
+blogRouter.get("/blogs",async(req,res)=>{
 
     try{
         const blog=await blogs.find().sort({createdAt:-1});
@@ -17,7 +32,7 @@ router.get("/blogs",async(req,res)=>{
 
 })
 
-router.get("/blogs/:id",async(req,res)=>{
+blogRouter.get("/blogs/:id",async(req,res)=>{
     try{
       const blog=await blogs.findById(req.params.id)
       res.json(blog);
@@ -29,27 +44,39 @@ router.get("/blogs/:id",async(req,res)=>{
   })
 
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "uploads");
-    },
-    filename: (req, file, cb) => {
-      cb(null, file.originalname);
-    },
-  });
-  
-  const upload = multer({ storage: storage });
+
   
 
-router.post("/post",upload.single('file'),async(req,res)=>{
+blogRouter.post("/post",upload.array('file[]',50),async(req,res)=>{
     try{
+      
+
+        const urls=[];
+        const files=req.files;
+        
+        for(const file of files)
+        {
+          const {path}=file;
+          const res=await cloudinary.uploader.upload(path)
+          // console.log(res.secure_url);
+          urls.push(res.secure_url);
+          // console.log(urls[0]);
+          fs.unlinkSync(path);
+
+        }
+         
+         
+      
+        
+     
+
+        // console.log(urls);
         const post=new blogs({
             title:req.body.title,
             summary:req.body.summary,
-            img: {
-              data: fs.readFileSync("uploads/" + req.file.filename),
-              contentType: "image/png",
-            },
+            img:urls,
+           
+     
             content:req.body.content,
           
           })
@@ -64,7 +91,7 @@ router.post("/post",upload.single('file'),async(req,res)=>{
     
 })
 
-router.put("/edit/:id",upload.single('file'),async(req,res)=>{
+blogRouter.put("/edit/:id",upload.single('file'),async(req,res)=>{
     try{
       const blog=await blogs.findById(req.params.id)
        blog.title=req.body.title;
@@ -93,7 +120,7 @@ router.put("/edit/:id",upload.single('file'),async(req,res)=>{
   
   })
 
-  router.delete("/delete/:id",async(req,res)=>{
+  blogRouter.delete("/delete/:id",async(req,res)=>{
     try{
 
         const blog=await blogs.findByIdAndDelete(req.params.id);
@@ -105,3 +132,8 @@ router.put("/edit/:id",upload.single('file'),async(req,res)=>{
 
     }
   })
+
+
+  
+  module.exports=blogRouter;
+
