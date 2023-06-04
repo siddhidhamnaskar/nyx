@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import {Link} from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -53,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Navabar() {
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box style={{display:"flex"}}>
       <AppBar position="static">
         <Toolbar>
          
@@ -61,17 +62,17 @@ export default function Navabar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, cursor:"pointer" }}
+            sx={{ flexGrow:8, display: { xs: 'none', sm: 'block' }, cursor:"pointer" }}
           >
-            HOME
+           <Link to={"/"} style={{color:"white"}}>HOME</Link> 
           </Typography>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, cursor:"pointer" }}
+            sx={{ flexGrow: 2, display: { xs: 'none', sm: 'block' }, cursor:"pointer" }}
           >
-            CREATE A POST
+           <Link to={"/create"} style={{color:"white"}}> CREATE A POST</Link>
           </Typography>
          
         </Toolbar>

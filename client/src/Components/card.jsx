@@ -5,38 +5,38 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import {Link} from "react-router-dom"
 
 const bull = (
   <Box
     component="span"
-    sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
+     sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
   >
     •
   </Box>
 );
 
-export default function BasicCard({title,summary,ontent,img,createdAt,updatedAt}) {
-  return (
-    <Card sx={{ minWidth: 275 }}>
+export default function BasicCard({title,summary,content,img,createdAt,updatedAt,_id}) {
+  return <>
+    <BasicCard/>
+    <Card style={{ width:"50%",margin:"auto",border:"blue" }}>
       <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
-        </Typography>
+     
         <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
+          {title}
         </Typography>
         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
+          {summary}
         </Typography>
         <Typography variant="body2">
-          well meaning and kindly.
+          {createdAt}
           <br />
-          {'"a benevolent smile"'}
+        
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
+        <Link to={`/details/${_id}`}><Button size="small">Learn More</Button></Link>
       </CardActions>
     </Card>
-  );
+    </>
 }

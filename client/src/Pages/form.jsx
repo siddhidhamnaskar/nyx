@@ -19,15 +19,20 @@ export default function Form(){
    const postData=(e)=>{
     e.preventDefault();
 
-    console.log(file[0]);
+
+    console.log(file);
       const data=new FormData();
       data.set('title',title);
       data.set('summary',summary);
-      data.set('file',file[0]);
+      
+    
+    for (let i = 0; i < file.length; i++) {
+       data.append('file[]', file[i]);
+    }
       data.set('content',content);
     
   
-      console.log(file[0]);
+      // console.log(file[0]);
       fetch(`${base_url}/post`,{
         method:"POST",
          body:data,
@@ -54,7 +59,7 @@ export default function Form(){
 
     }
     const paperStyle={
-        width:"30%",
+        width:"50%",
         height:"550px",
          margin:"auto",
         marginTop:"30px",
@@ -88,8 +93,8 @@ export default function Form(){
 
     return <>
 
-<Paper elevation={20} style={paperStyle}>
-        <form style={{width:"100%",height:"100%"}} >
+<Paper elevation={20} style={paperStyle} >
+        <form style={{width:"100%",height:"100%"}} onSubmit={postData}>
             <Typography style={{fontSize:"30px",fontWeight:"bold",marginTop:"20px"}}>CREATE A POST</Typography>
             <TextField
     required
@@ -133,7 +138,7 @@ export default function Form(){
   />
           <ReactQuill value={content} onChange={newValue=>setContent(newValue)} style={{width:"90%",margin:"auto",marginTop:"30px"}} modules={modules}/>
        
-          <Button style={{width:"90%",margin:"auto",height:"50px",marginTop:"20px",color:"white",fontSize:"30px"}} variant="contained">SUBMIT</Button>
+          <Button type="Submit" style={{width:"90%",margin:"auto",height:"50px",marginTop:"20px",color:"white",fontSize:"30px"}} variant="contained">SUBMIT</Button>
         </form>
     </Paper>
     
