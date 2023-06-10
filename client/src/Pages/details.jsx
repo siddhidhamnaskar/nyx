@@ -2,12 +2,12 @@ import { Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { base_url } from "../services/API";
-import {formatISO9075} from "date-fns";
+// import {formatISO9075} from "date-fns";
 
 
 export default function Details(){
 
-    const [data,setData]=useState({});
+    const [data,setData]=useState({img:[]});
     const {id}=useParams();
 
     useEffect(()=>{
@@ -17,7 +17,7 @@ export default function Details(){
             return res.json();
         })
         .then((json)=>{
-            console.log(json);
+            console.log(json.img);
             setData(json);
 
         })
@@ -25,7 +25,7 @@ export default function Details(){
     },[])
 
     return <>
-    <Paper elevation={20} style={{width:"50%",height:"100vh",margin:"auto",marginTop:"20px",padding:"30px"}}>
+    <Paper elevation={20} style={{width:"50%",margin:"auto",marginTop:"20px",padding:"30px"}}>
        <h1>{data.title}</h1>
 
        <h4>{data.summary}</h4>
@@ -40,9 +40,13 @@ export default function Details(){
         <div dangerouslySetInnerHTML={{__html:data.content}}/>
 
         <h2>Images:</h2>
-        {/* {data.img.map((elem)=>{
+        <div className="imageContainer">
+        {data.img.map((elem)=>{
            return <img src={elem} />
-        })} */}
+        })}
+
+        </div>
+       
 
 
 

@@ -2,14 +2,19 @@ import { Paper, TextField, Typography} from "@mui/material";
 // import ResponsiveAppBar from "../Components/AppBar";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useEffect, useState ,useParams} from "react";
+import { useEffect, useState} from "react";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { base_url } from "../services/API";
 import Button from '@mui/material/Button';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+
+
 export default function Edit(){
 
     const {id}=useParams();
-
+    const [load,setLoad]=useState(false);
     const [title, setTitle]=useState("");
    const [summary ,setSummary]=useState("");
    const [content,setContent]=useState("");
@@ -19,10 +24,10 @@ export default function Edit(){
     fetch(`${base_url}/blogs/${id}`)
     .then((res)=>{
        res.json().then((json)=>{
-        console.log(json.Title);
-        setTitle(json.Title);
-        setSummary(json.Summary);
-        setContent(json.Content)
+       
+        setTitle(json.title);
+        setSummary(json.summary);
+        setContent(json.content)
        });
     })
    },[])
@@ -30,14 +35,19 @@ export default function Edit(){
    
    const editPost=(e)=>{
     e.preventDefault();
+    setLoad(true)
       const data=new FormData();
       data.set('title',title);
       data.set('summary',summary);
+         
+   
     
       data.set('content',content);
-      if(file[0])
+      if(file)
       {
-        data.set('file',file[0]);
+        for (let i = 0; i < file.length; i++) {
+          data.append('file[]', file[i]);
+       }
       }
   
       console.log(file[0]);
@@ -48,7 +58,9 @@ export default function Edit(){
 
       })
       .then((res)=>{
-        alert("Created Succesfully");
+        setLoad(false)
+        alert("Updated Succesfully");
+        
         navigate("/");
          
       })
@@ -69,11 +81,12 @@ export default function Edit(){
 
     }
     const paperStyle={
-        width:"30%",
+        width:"50%",
         height:"550px",
          margin:"auto",
         marginTop:"30px",
         display:"flex",
+        flexDirection:"column",
         alignItems:"center",
         justifiedContent:"center",
         textAlign:"center"
@@ -104,8 +117,11 @@ export default function Edit(){
     return <>
 
 <Paper elevation={20} style={paperStyle}>
+{load ?  <Box sx={{ width: '100%' }}>
+      <LinearProgress />
+    </Box>:null}
         <form style={{width:"100%",height:"100%"}} onSubmit={editPost} >
-            <Typography style={{fontSize:"30px",fontWeight:"bold",marginTop:"20px"}}>CREATE A POST</Typography>
+            <Typography style={{fontSize:"30px",fontWeight:"bold",marginTop:"20px"}}>Edit the POST</Typography>
             <TextField
     required
     id="outlined-required"
@@ -147,7 +163,7 @@ export default function Edit(){
     
   />
           <ReactQuill value={content} onChange={newValue=>setContent(newValue)} style={{width:"90%",margin:"auto",marginTop:"30px"}} modules={modules}/>
-          <Button style={{width:"90%",margin:"auto",height:"50px",marginTop:"20px",color:"white",fontSize:"30px"}} variant="contained">SUBMIT</Button>
+          <Button style={{width:"90%",margin:"auto",height:"50px",marginTop:"20px",color:"white",fontSize:"30px"}} variant="contained" onClick={editPost}>SUBMIT</Button>
         </form>
     </Paper>
     

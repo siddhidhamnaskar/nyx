@@ -6,11 +6,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base_url } from "../services/API";
 import Button from '@mui/material/Button';
+import Navabar from "../Components/Navabar";
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
 
 export default function Form(){
 
 
-
+    const [load,setLoad]=useState(false);
     const [title, setTitle]=useState("");
    const [summary ,setSummary]=useState("");
    const [content,setContent]=useState("");
@@ -19,7 +22,7 @@ export default function Form(){
    const postData=(e)=>{
     e.preventDefault();
 
-
+    setLoad(true)
     console.log(file);
       const data=new FormData();
       data.set('title',title);
@@ -41,6 +44,7 @@ export default function Form(){
       })
       .then((res)=>{
         alert("Created Succesfully");
+        setLoad(false);
         navigate("/");
          
       })
@@ -64,6 +68,7 @@ export default function Form(){
          margin:"auto",
         marginTop:"30px",
         display:"flex",
+        flexDirection:"column",
         alignItems:"center",
         justifiedContent:"center",
         textAlign:"center"
@@ -92,8 +97,12 @@ export default function Form(){
 
 
     return <>
+    <Navabar/>
 
 <Paper elevation={20} style={paperStyle} >
+{load ?  <Box sx={{ width: '100%' }}>
+      <LinearProgress />
+    </Box>:null}
         <form style={{width:"100%",height:"100%"}} onSubmit={postData}>
             <Typography style={{fontSize:"30px",fontWeight:"bold",marginTop:"20px"}}>CREATE A POST</Typography>
             <TextField

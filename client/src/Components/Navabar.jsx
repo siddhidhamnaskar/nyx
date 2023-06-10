@@ -3,11 +3,11 @@ import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
+// import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
+// import MenuIcon from '@mui/icons-material/Menu';
+// import SearchIcon from '@mui/icons-material/Search';
 import {Link} from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
@@ -64,7 +64,7 @@ export default function Navabar() {
             component="div"
             sx={{ flexGrow:8, display: { xs: 'none', sm: 'block' }, cursor:"pointer" }}
           >
-           <Link to={"/"} style={{color:"white"}}>HOME</Link> 
+          <Link to={"/"} style={{color:"white"}}>HOME</Link> 
           </Typography>
           <Typography
             variant="h6"
@@ -72,7 +72,7 @@ export default function Navabar() {
             component="div"
             sx={{ flexGrow: 2, display: { xs: 'none', sm: 'block' }, cursor:"pointer" }}
           >
-           <Link to={"/create"} style={{color:"white"}}> CREATE A POST</Link>
+           <Link to={"/create"} style={{color:"white"}}>CREATE A POST</Link> 
           </Typography>
          
         </Toolbar>

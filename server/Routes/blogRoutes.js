@@ -6,7 +6,7 @@ const fs =require('fs');
 
 const dotenv=require("dotenv");
 dotenv.config();
-const cloudinary=require("cloudinary").v2;
+const cloudinary=require("cloudinary");
 
 cloudinary.config({
     cloud_name:process.env.CLOUD_NAME,
@@ -22,7 +22,8 @@ const upload=require('../ImageUpload/multer')
 blogRouter.get("/blogs",async(req,res)=>{
 
     try{
-        const blog=await blogs.find().sort({createdAt:-1});
+      console.log(1);
+        const blog=await blogs.find().sort({createdAt:-1})
         res.status(200).json(blog)
 
     }
@@ -35,7 +36,7 @@ blogRouter.get("/blogs",async(req,res)=>{
 blogRouter.get("/blogs/:id",async(req,res)=>{
     try{
       const blog=await blogs.findById(req.params.id)
-      res.json(blog);
+      res.status(200).json(blog)
   
     }
     catch(err){
@@ -51,7 +52,7 @@ blogRouter.post("/post",upload.array('file[]',50),async(req,res)=>{
     try{
       
 
-        const urls=[];
+         const urls=[];
         const files=req.files;
         
         for(const file of files)
@@ -61,7 +62,7 @@ blogRouter.post("/post",upload.array('file[]',50),async(req,res)=>{
           // console.log(res.secure_url);
           urls.push(res.secure_url);
           // console.log(urls[0]);
-          fs.unlinkSync(path);
+           fs.unlinkSync(path);
 
         }
          
@@ -91,19 +92,28 @@ blogRouter.post("/post",upload.array('file[]',50),async(req,res)=>{
     
 })
 
-blogRouter.put("/edit/:id",upload.single('file'),async(req,res)=>{
+blogRouter.put("/edit/:id",upload.array('file[]',50),async(req,res)=>{
     try{
       const blog=await blogs.findById(req.params.id)
        blog.title=req.body.title;
        blog.summary=req.body.summary;
        blog.content=req.body.content;
-       if(req.file)
+       if(req.files)
        {
-       
-        blog.img={
-          data: fs.readFileSync("uploads/" + req.file.filename),
-          contentType: "image/png",
+        const urls=[];
+        const files=req.files;
+        
+        for(const file of files)
+        {
+          const {path}=file;
+          const res=await cloudinary.uploader.upload(path)
+          //  console.log(res.secure_url);
+          urls.push(res.secure_url);
+          // console.log(urls[0]);
+           fs.unlinkSync(path);
+
         }
+        blog.img=urls
   
        }
   

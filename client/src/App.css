@@ -8,3 +8,14 @@
   gap: 30px;
   margin-top: 30px;
 }
+
+.imageContainer{
+  width: 90%;
+ 
+  margin: auto;
+}
+.imageContainer>img{
+  width:90%;
+  height: 200px;
+  margin: auto;
+}
