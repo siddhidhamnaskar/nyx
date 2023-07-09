@@ -9,7 +9,7 @@ const connection=require("./Config/db")
 const bodyparser=require("body-parser");
 //  const io=require('socket.io')(server,{cors:{origin:'*'}})
 
-//  app.set("view engine", "ejs")
+ app.set("view engine", "ejs")
  
 // Body-parser middleware
 
