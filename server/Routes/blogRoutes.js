@@ -48,7 +48,7 @@ blogRouter.get("/blogs/:id",async(req,res)=>{
 
   
 
-blogRouter.post("/post",upload.array('file[]',50),async(req,res)=>{
+blogRouter.post("/post",async(req,res)=>{
     try{
       
 
