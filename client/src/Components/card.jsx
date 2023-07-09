@@ -11,23 +11,14 @@ import { store } from "../Redux/store";
 import { getData } from "../Redux/actions";
 
 
-// const bull = (
-//   <Box
-//     component="span"
-//      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-//   >
-    
-//   </Box>
-// );
+
 
 export default function BasicCard({title,summary,content,img,createdAt,updatedAt,_id}) {
   const deletePost=(_id)=>{
     alert("Do you want to delete this post")
       fetch(`${base_url}/delete/${_id}`,{
         method:"DELETE",
-        headers:{
-          "Content-Type":"application/json"
-        }
+       
       })
       .then((res)=>{
           return res.json()
