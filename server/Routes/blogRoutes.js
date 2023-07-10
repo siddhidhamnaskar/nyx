@@ -73,12 +73,12 @@ blogRouter.post("/post",upload.array('file[]',50),async(req,res)=>{
 
         // console.log(urls);
         const post=new blogs({
-            title:req.body.title,
-            summary:req.body.summary,
-            img:urls[0],
-           
-     
-            content:req.body.content,
+          Image:urls[0],
+          Title:req.body.title,
+          Price:req.body.price,
+          Color:req.body.color,
+          Mileage:req.body.mileage,
+          Discription:req.body.discription
           
           })
           const posts=await post.save();
