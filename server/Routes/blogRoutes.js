@@ -75,7 +75,7 @@ blogRouter.post("/post",upload.array('file[]',50),async(req,res)=>{
         const post=new blogs({
             title:req.body.title,
             summary:req.body.summary,
-            img:urls,
+            img:urls[0],
            
      
             content:req.body.content,
