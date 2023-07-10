@@ -4,6 +4,7 @@ const cors=require("cors");
 dotenv.config();
 const app=express();
 const blogRouter=require("./Routes/blogRoutes")
+const userRouter=require("./Routes/userRoutes")
 const connection=require("./Config/db")
 // const server=require("http").createServer(app);
 const bodyparser=require("body-parser");
@@ -24,6 +25,7 @@ app.use(bodyparser.json())
  
 
  app.use(express.json());
+ app.use('/user',userRouter)
 
 app.use("/",blogRouter)
 app.listen(PORT,()=>{
