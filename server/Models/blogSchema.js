@@ -7,8 +7,8 @@ const blogSchema=new mongoose.Schema({
     Price:{type:Number,required:true},
     Color:{type:String,required:true},
     Mileage:{type:Number,required:true},
-    Discription:{type:String}
-    // Author:{type:Schema.Types.ObjectId,ref:'User'}
+    Discription:{type:String},
+    Author:{type:Schema.Types.ObjectId,ref:'User'}
 },{
     timestamps:true
 })
